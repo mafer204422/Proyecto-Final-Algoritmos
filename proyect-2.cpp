@@ -1,11 +1,16 @@
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <map>
-#include <random>
-#include <string>
-#include <vector>
+// bibliotecas necesarias para el uso del programa
+#include <algorithm> // funciones de algoritmo como sort(), find().
+#include <cstdlib>   // funciones generales como malloc(), free(), exit() .
+#include <iostream>  // funciones para entrada/salida
+#include <map>       // tipo de datos map (diccionario)
+#include <random>    // funciones para generar números aleatorios
+#include <string>    // tipo de datos string y funciones asociadas
+#include <vector>    // tipo de datos vector (array dinámico)
+#include <limits>    // información sobre los límites de los tipos de datos
+
+// Permite el uso de los nombres de la biblioteca estándar directamente, sin necesidad de anteponer 'std::'
 using namespace std;
+
 
 struct Servicio {
   string nombre;
@@ -125,8 +130,12 @@ Usuario UsuarioTemporal() {
   return usuarioTemporal;
 }
 
+
 void mostrarDatosUsuario(Usuario &usuario) {
-  cout << "\n--------- Informacion del Usuario ---------" << endl;
+  system("cls");
+  cout << "-----------------------------------------------";
+  cout << "\n INFORMACION DEL USUARIO " << endl;
+  cout << "-----------------------------------------------\n";
   cout << "Nombre: " << usuario.nombre << endl;
   cout << "Apellido: " << usuario.apellido << endl;
   cout << "DPI: " << usuario.DPI << endl;
@@ -134,10 +143,14 @@ void mostrarDatosUsuario(Usuario &usuario) {
   cout << "NIT: " << usuario.NIT << endl;
   cout << "Contacto: " << usuario.contacto << endl;
   cout << "Tipo de Cliente: " << usuario.tipoCliente << endl;
+  cout << "-----------------------------------------------\n\n";
+
   if (usuario.planServicio.nombre.empty()) {
     cout << "Actualmente no cuentas con ningun plan activo" << endl;
   } else {
-    cout << "Plan de Servicio: " << usuario.planServicio.nombre << endl;
+    cout << "-----------------------------------------------\n";
+    cout << "PLAN DE SERCVICIO ACTUAL: " << usuario.planServicio.nombre << endl;
+    cout << "-----------------------------------------------\n";
     cout << "Servicios incluidos: " << endl;
     for (const auto &servicio : usuario.planServicio.serviciosIncluidos) {
       cout << "- " << servicio.nombre << ": " << servicio.descripcion << endl;
@@ -146,27 +159,52 @@ void mostrarDatosUsuario(Usuario &usuario) {
         encontrarIndiceDePlan(planes, usuario.planServicio.nombre);
     if (planActual != -1 && planActual < planes.size()) {
       int mejorplan = planActual + 1;
+      cout << "-----------------------------------------------\n\n";
       cout << "Puedes mejorar al plan: " << planes[mejorplan].nombre << endl;
       for (const auto &servicio : planes[mejorplan].serviciosIncluidos) {
         cout << "- " << servicio.nombre << ": " << servicio.descripcion << endl;
       }
       int opcion;
       do {
+        cout << "--------------------------------------------------------------\n";
         cout << "1. para mejorar al plan : " << planes[mejorplan].nombre<< endl;
-        cout << "2. para volver al menu principal : ";
+        cout << "2. para volver al menu principal " << endl;
+        cout << "Elige una opcion: ";
         cin >> opcion;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer de entrada después de cada entrada del usuario
       } while (opcion != 1 && opcion != 2);
+
       if (opcion == 1) {
+      	system("cls");
         usuario.planServicio = planes[mejorplan];
-        cout << "Tu plan ha sido actualizado al plan : "
+        cout << "--------------------------------------------------------------\n\n\n\n";
+        cout << "TU PLAN HA SIDO ACTUALIZADO AL PLAN:\n\n\n\n"
              << planes[mejorplan].nombre << endl;
+
+        int opcionRegresar;
+        do {
+          cout << "--------------------------------------------------------------\n\n";
+          cout << "1. Regresar al menu principal" << endl;
+          cin >> opcionRegresar;
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer de entrada después de cada entrada del usuario
+        } while (opcionRegresar != 1);
+
+        if (opcionRegresar == 1) {
+          menuUsuario(contactoActual);
+        }
+      } else if (opcion == 2) {
+        menuUsuario(contactoActual);
       }
-      menuUsuario(contactoActual);
-    } else {
-      cout << "Felicidades ya cuentas con el mejor plan posible!" << endl;
     }
   }
 }
+
+
+
+
+
+
+
 
 int mostrarTelefoniaMovil() {
   int opcion;
@@ -174,7 +212,7 @@ int mostrarTelefoniaMovil() {
     system("cls");
     cout << "\n--- TELEFONIA MOVIL ---\n";
     cout << "1. Plan de 100 minutos\n";
-    cout << "2. Plan de 300 minutos con SMS ilimitados\n";
+    cout << "2. Plan de 300 minutos con SMS ilimitados\n";	
     cout << "3. Plan con 5GB de datos\n";
     cout << "4. Volver al men� de servicios\n";
     cout << "Elige una opci�n:";
@@ -324,6 +362,7 @@ int mostrarTV() {
   return 0;
 }
 
+
 int mostrarServicios() {
   int opcion;
   do {
@@ -337,12 +376,12 @@ int mostrarServicios() {
     cout << "9. Volver\n";
     cout << "Elige una opcion: ";
     cin >> opcion;
-    opcion = opcion - 1;
     cin.ignore(); // Limpia el buffer
     if (opcion == 9) {
-      return 0; // Retorna al men� anterior
-    } else if (opcion >= 0 &&
-               opcion < usuarioActual.planServicio.serviciosIncluidos.size()) {
+      return 0; // Retorna al menú anterior
+    } else if (opcion > 0 &&
+               opcion <= usuarioActual.planServicio.serviciosIncluidos.size()) {
+      opcion = opcion - 1; // Restamos 1 a la opción para que coincida con el índice del vector
       cout << "Has elegido:"
            << usuarioActual.planServicio.serviciosIncluidos[opcion].nombre
            << endl;
@@ -368,6 +407,10 @@ int mostrarServicios() {
   } while (opcion != 9);
   return 0;
 };
+
+
+
+
 
 int mostrarPlanes() {
   int opcion;
