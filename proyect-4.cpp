@@ -140,7 +140,7 @@ Usuario UsuarioTemporal() {
 }
 
 void mostrarDatosUsuario(Usuario &usuario) {
-  system("cls");
+  
   cout << "-----------------------------------------------";
   cout << "\n INFORMACION DEL USUARIO " << endl;
   cout << "-----------------------------------------------\n";
@@ -187,7 +187,7 @@ void mostrarDatosUsuario(Usuario &usuario) {
       } while (opcion != 1 && opcion != 2);
 
       if (opcion == 1) {
-        system("cls");
+        
         usuario.planServicio = planes[mejorplan];
         cout << "Tu plan ha sido actualizado al plan : "
              << planes[mejorplan].nombre << endl;
@@ -216,7 +216,7 @@ void mostrarDatosUsuario(Usuario &usuario) {
 int mostrarTelefoniaMovil() {
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n--- TELEFONIA MOVIL ---\n";
     cout << "1. Plan de 100 minutos\n";
     cout << "2. Plan de 300 minutos con SMS ilimitados\n";
@@ -250,7 +250,7 @@ int mostrarTelefoniaResidencial() {
   int opcion;
 
   do {
-    system("cls");
+    
     cout << "\n--- TELEFONIA RESIDENCIAL ---\n";
     cout << "1. Tel�fono solo\n";
     cout << "2. Tel�fono + Internet\n";
@@ -288,7 +288,7 @@ int mostrarTelefoniaResidencial() {
 int mostrarInternetMovil() {
   int opcion;
   do {
-    system("cls");
+   
     cout << "\n--- INTERNET MOVIL ---\n";
     cout << "1. Pre-pago 2GB\n";
     cout << "2. Post-pago 10GB\n";
@@ -316,7 +316,7 @@ int mostrarInternetMovil() {
 int mostrarInternetResidencial() {
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n--- INTERNET RESIDENCIAL ---\n";
     cout << "1. Internet 10Mbps\n";
     cout << "2. Internet 50Mbps + TV\n";
@@ -344,7 +344,7 @@ int mostrarInternetResidencial() {
 int mostrarTV() {
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n--- TV ---\n";
     cout << "1. Paquete b�sico 100 canales\n";
     cout << "2. Paquete premium 200 canales + deportes\n";
@@ -372,7 +372,7 @@ int mostrarTV() {
 int mostrarServicios() {
   int opcion;
   do {
-    system("cls");
+    
     int optionindex = 1;
     for (const auto &servicio : usuarioActual.planServicio.serviciosIncluidos) {
       cout << optionindex << ". " << servicio.nombre << ": "
@@ -418,7 +418,7 @@ int mostrarServicios() {
 int mostrarPlanes() {
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n--- PLANES Y PAQUETES ---\n";
     cout << "Escoge el plan que quieras comprar: \n";
     int index = 1;
@@ -431,6 +431,7 @@ int mostrarPlanes() {
     cin.ignore(); // Limpia el buffer
   } while (opcion < 0 || opcion > planes.size());
   if (opcion != 0) {
+
     if (usuarioActual.nombre.empty()) {
       cout << "---------------------------------------\n";
       cout << "Debes crear una cuenta antes de poder escoger un plan:" << endl;
@@ -525,7 +526,7 @@ void escribirConsultaEspecifica() {
 int consultaGeneral() {
   int opcion;
   do {
-    system("cls");
+
     cout << "\n--- CONSULTA GENERAL ---\n";
     cout << "1. Consulta general\n";
     cout << "2. Consulta Especifica\n";
@@ -586,7 +587,7 @@ void verEstadoQuejas() {
 }
 
 void quejaGeneral() {
-  system("cls");
+  
   cout << "\n--- QUEJAS ---\n";
   cout << "1. Introducir una nueva queja\n";
   cout << "2. Ver estado de quejas previas\n";
@@ -628,7 +629,7 @@ void verEstadoMantenimientos() {
 }
 
 void mantenimientoServicio() {
-  system("cls");
+  
   cout << "\n--- MANTENIMIENTO DE SERVICIOS ---\n";
   cout << "1. Solicitar mantenimiento para un servicio\n";
   cout << "2. Ver estado de solicitudes de mantenimiento anteriores\n";
@@ -651,7 +652,7 @@ void mantenimientoServicio() {
 }
 
 Usuario registrarUsuario() {
-  system("cls");
+  
   Usuario user;
   cout << "Por favor, ingresa la siguiente informacion:\n";
   cin.ignore();
@@ -677,7 +678,7 @@ Usuario registrarUsuario() {
 }
 
 bool iniciarSesion(string &contactoActual) {
-  system("cls");
+  
   cout << "Ingreso de usuario registrado:\n";
   string contrasena;
   cout << "Contacto: ";
@@ -696,7 +697,7 @@ bool iniciarSesion(string &contactoActual) {
 }
 
 Usuario actualizarDatos(Usuario usuarioActual) {
-  system("cls");
+  
   int opcion;
 
   do {
@@ -788,7 +789,7 @@ void menuUsuario(string &contactoActual) {
   }
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n------------------- MENU REGISTRADO -------------------\n";
     cout << "1. Servicios\n";
     cout << "2. Planes y Paquetes\n";
@@ -841,7 +842,7 @@ int main() {
 
   int opcion;
   do {
-    system("cls");
+    
     cout << "\n------------------- MENU PRINCIPAL -------------------\n";
     cout << "1. Iniciar sesion\n";
     cout << "2. Registrarse\n";
