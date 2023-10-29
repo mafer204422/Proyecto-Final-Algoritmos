@@ -2,15 +2,15 @@
 #include <algorithm> // funciones de algoritmo como sort(), find().
 #include <cstdlib>   // funciones generales como malloc(), free(), exit() .
 #include <iostream>  // funciones para entrada/salida
+#include <limits>    // información sobre los límites de los tipos de datos
 #include <map>       // tipo de datos map (diccionario)
 #include <random>    // funciones para generar números aleatorios
 #include <string>    // tipo de datos string y funciones asociadas
 #include <vector>    // tipo de datos vector (array dinámico)
-#include <limits>    // información sobre los límites de los tipos de datos
 
-// Permite el uso de los nombres de la biblioteca estándar directamente, sin necesidad de anteponer 'std::'
+// Permite el uso de los nombres de la biblioteca estándar directamente, sin
+// necesidad de anteponer 'std::'
 using namespace std;
-
 
 struct Servicio {
   string nombre;
@@ -55,6 +55,7 @@ map<string, Usuario> usuarios;
 vector<Servicio> servicios;
 vector<Plan> planes;
 Usuario usuarioActual = {};
+Usuario registrarUsuario();
 void menuUsuario(string &contactoActual);
 string contactoActual = "";
 void verEstadoMantenimientos();
@@ -69,6 +70,14 @@ int encontrarIndiceDePlan(vector<Plan> plans, string elementoBuscado) {
     }
   }
   return -1; // Devuelve -1 si el elemento no se encuentra.
+}
+
+void irAMenuUsuario() {
+  cout << "------------------------------------\n";
+  cout << "Oprime Cualquier tecla para continuar...\n";
+  cout << "------------------------------------\n";
+  cin.get();    // Esperamos a que el usuario presione Enter
+  menuUsuario(contactoActual);
 }
 
 // creacion de un id random
@@ -130,7 +139,6 @@ Usuario UsuarioTemporal() {
   return usuarioTemporal;
 }
 
-
 void mostrarDatosUsuario(Usuario &usuario) {
   system("cls");
   cout << "-----------------------------------------------";
@@ -166,27 +174,33 @@ void mostrarDatosUsuario(Usuario &usuario) {
       }
       int opcion;
       do {
-        cout << "--------------------------------------------------------------\n";
-        cout << "1. para mejorar al plan : " << planes[mejorplan].nombre<< endl;
+        cout << "--------------------------------------------------------------"
+                "\n";
+        cout << "1. para mejorar al plan : " << planes[mejorplan].nombre
+             << endl;
         cout << "2. para volver al menu principal " << endl;
         cout << "Elige una opcion: ";
         cin >> opcion;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer de entrada después de cada entrada del usuario
+        cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                   '\n'); // Limpia el buffer de entrada después de cada entrada
+                          // del usuario
       } while (opcion != 1 && opcion != 2);
 
       if (opcion == 1) {
-      	system("cls");
+        system("cls");
         usuario.planServicio = planes[mejorplan];
-        cout << "--------------------------------------------------------------\n\n\n\n";
-        cout << "TU PLAN HA SIDO ACTUALIZADO AL PLAN:\n\n\n\n"
+        cout << "Tu plan ha sido actualizado al plan : "
              << planes[mejorplan].nombre << endl;
 
         int opcionRegresar;
         do {
-          cout << "--------------------------------------------------------------\n\n";
+          cout << "------------------------------------------------------------"
+                  "--\n";
           cout << "1. Regresar al menu principal" << endl;
           cin >> opcionRegresar;
-          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer de entrada después de cada entrada del usuario
+          cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                     '\n'); // Limpia el buffer de entrada después de cada
+                            // entrada del usuario
         } while (opcionRegresar != 1);
 
         if (opcionRegresar == 1) {
@@ -199,20 +213,13 @@ void mostrarDatosUsuario(Usuario &usuario) {
   }
 }
 
-
-
-
-
-
-
-
 int mostrarTelefoniaMovil() {
   int opcion;
   do {
     system("cls");
     cout << "\n--- TELEFONIA MOVIL ---\n";
     cout << "1. Plan de 100 minutos\n";
-    cout << "2. Plan de 300 minutos con SMS ilimitados\n";	
+    cout << "2. Plan de 300 minutos con SMS ilimitados\n";
     cout << "3. Plan con 5GB de datos\n";
     cout << "4. Volver al men� de servicios\n";
     cout << "Elige una opci�n:";
@@ -362,7 +369,6 @@ int mostrarTV() {
   return 0;
 }
 
-
 int mostrarServicios() {
   int opcion;
   do {
@@ -381,7 +387,8 @@ int mostrarServicios() {
       return 0; // Retorna al menú anterior
     } else if (opcion > 0 &&
                opcion <= usuarioActual.planServicio.serviciosIncluidos.size()) {
-      opcion = opcion - 1; // Restamos 1 a la opción para que coincida con el índice del vector
+      opcion = opcion - 1; // Restamos 1 a la opción para que coincida con el
+                           // índice del vector
       cout << "Has elegido:"
            << usuarioActual.planServicio.serviciosIncluidos[opcion].nombre
            << endl;
@@ -408,10 +415,6 @@ int mostrarServicios() {
   return 0;
 };
 
-
-
-
-
 int mostrarPlanes() {
   int opcion;
   do {
@@ -421,15 +424,26 @@ int mostrarPlanes() {
     int index = 1;
     for (const auto &plan : planes) {
       cout << index << ". " << plan.nombre << " - " << plan.descripcion << endl;
+      index++;
     }
     cout << "0. Volver al menu principal\n";
     cin >> opcion;
     cin.ignore(); // Limpia el buffer
-  } while (opcion != 0);
+  } while (opcion < 0 || opcion > planes.size());
   if (opcion != 0) {
-    usuarioActual = UsuarioTemporal();
-    usuarioActual.planServicio = planes[opcion - 1];
-    cout << "El plan:" << usuarioActual.planServicio.nombre << "ha sido activado en tu cuenta!" << endl;
+    if (usuarioActual.nombre.empty()) {
+      cout << "---------------------------------------\n";
+      cout << "Debes crear una cuenta antes de poder escoger un plan:" << endl;
+      cout << "---------------------------------------\n";
+      usuarioActual = registrarUsuario();
+    }
+    int indexplan = opcion - 1;
+    usuarioActual.planServicio = planes[indexplan];
+    cout << "---------------------------------------\n";
+    cout << "El plan: " << usuarioActual.planServicio.nombre
+         << " ha sido activado en tu cuenta!" << endl;
+    cout << "---------------------------------------\n";
+    irAMenuUsuario();
   }
   return 0;
 }
@@ -439,9 +453,13 @@ void escribirConsultaGeneral() {
   string consulta;
   cin.ignore();
   getline(cin, consulta);
-  cout << "Tu conulta sen envio a uno de nuestros asesores pronto nos "
+  cout << "-----------------------------------------------"
+    "--\n";
+  cout << "Tu consulta se envio a uno de nuestros asesores pronto nos "
           "comunicaremos contigo.\n";
-  menuUsuario(contactoActual);
+  cout << "-----------------------------------------------"
+    "--\n";
+  irAMenuUsuario();
 }
 
 void consultaPromociones() {
@@ -449,9 +467,13 @@ void consultaPromociones() {
   string consulta;
   cin.ignore();
   getline(cin, consulta);
+  cout << "-----------------------------------------------"
+    "--\n";
   cout << "Tu consulta se envio a uno de nuestros asesores pronto nos "
           "comunicaremos contigo.\n";
-  menuUsuario(contactoActual);
+  cout << "-----------------------------------------------"
+    "--\n";
+  irAMenuUsuario();
 }
 void consultaMantenimientos() {
   verEstadoMantenimientos();
@@ -459,9 +481,13 @@ void consultaMantenimientos() {
   string consulta;
   cin.ignore();
   getline(cin, consulta);
+  cout << "-----------------------------------------------"
+    "--\n";
   cout << "Tu consulta se envio a uno de nuestros asesores pronto nos "
           "comunicaremos contigo.\n";
-  menuUsuario(contactoActual);
+  cout << "-----------------------------------------------"
+    "--\n";
+  irAMenuUsuario();
 }
 void consultaQuejas() {
   verEstadoQuejas();
@@ -469,9 +495,13 @@ void consultaQuejas() {
   string consulta;
   cin.ignore();
   getline(cin, consulta);
+  cout << "-----------------------------------------------"
+    "--\n";
   cout << "Tu consulta se envio a uno de nuestros asesores pronto nos "
           "comunicaremos contigo.\n";
-  menuUsuario(contactoActual);
+  cout << "-----------------------------------------------"
+    "--\n";
+  irAMenuUsuario();
 }
 void escribirConsultaEspecifica() {
   int opcion;
@@ -490,7 +520,7 @@ void escribirConsultaEspecifica() {
       verEstadoQuejas();
     }
   } while (opcion != 9);
-  menuUsuario(contactoActual);
+  irAMenuUsuario();
 }
 int consultaGeneral() {
   int opcion;
@@ -533,9 +563,13 @@ void introducirQueja() {
   getline(cin, queja);
   string newid = generarID(8);
   usuarioActual.quejas.push_back({newid, "en Proceso", queja});
+  cout << "-----------------------------------------------"
+    "--\n";
   cout << "Queja registrada "
        << "con el ticket " << newid << "Gracias por tu feedback.\n";
-  menuUsuario(contactoActual);
+  cout << "-----------------------------------------------"
+    "--\n";
+  irAMenuUsuario();
 }
 
 void verEstadoQuejas() {
@@ -548,6 +582,7 @@ void verEstadoQuejas() {
   } else {
     cout << "No tienes quejas registradas.\n";
   }
+  irAMenuUsuario();
 }
 
 void quejaGeneral() {
