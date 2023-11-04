@@ -12,10 +12,13 @@
 // necesidad de anteponer 'std::'
 using namespace std;
 
+// Estructura para representar un Servicio
 struct Servicio {
   string nombre;
   string descripcion;
 };
+
+// Estructura para representar un Plan
 struct Plan {
   string nombre;
   string descripcion;
@@ -24,21 +27,24 @@ struct Plan {
   int precio;
 };
 
-// tipos que puede tener un plan
+// Vector para almacenar los tipos de planes disponibles
 vector<string> tiposPlan = {"residencial", "movil"};
 
+// Estructura para representar un Mantenimiento
 struct Mantenimientos {
   int id;
   string nombreDelServicio;
   string status;
 };
 
+// Estructura para representar una Queja
 struct Quejas {
   string id;
   string status;
   string description;
 };
 
+// Estructura para representar un Usuario
 struct Usuario {
   string nombre;
   string apellido;
@@ -53,6 +59,8 @@ struct Usuario {
   vector<Quejas> quejas;
 };
 
+
+// Mapa que almacena los usuarios del sistema, donde la clave es el contacto del usuario y el valor es la estructura del usuario.
 map<string, Usuario> usuarios;
 vector<Servicio> servicios;
 vector<Plan> planes;
@@ -63,8 +71,10 @@ string contactoActual = "";
 void verEstadoMantenimientos();
 void verEstadoQuejas();
 
-// funciones utiles
-// encontrar index de un servicio particular
+// Esta función recibe un vector de planes y un nombre de plan como parámetros.
+// Recorre el vector de planes y compara el nombre de cada plan con el nombre del plan buscado.
+// Si encuentra un plan con el nombre buscado, devuelve el índice de ese plan en el vector.
+// Si no encuentra ningún plan con el nombre buscado, devuelve -1.
 int encontrarIndiceDePlan(vector<Plan> plans, string elementoBuscado) {
   for (int i = 0; i < plans.size(); i++) {
     if (plans[i].nombre == elementoBuscado) {
@@ -74,6 +84,8 @@ int encontrarIndiceDePlan(vector<Plan> plans, string elementoBuscado) {
   return -1; // Devuelve -1 si el elemento no se encuentra.
 }
 
+// Esta función se encarga de limpiar el buffer de entrada, mostrar un mensaje en pantalla
+// y esperar a que el usuario presione Enter antes de llamar a la función menuUsuario().
 void irAMenuUsuario() {
   cin.clear();
   cout << "------------------------------------\n";
@@ -712,7 +724,7 @@ void menuUsuario(string &contactoActual) {
     cout << "4. Mantenimiento de Servicio\n";
     cout << "5. Actualizar informacion personal\n";
     cout << "6. Actualiza tu Plan/Paquete\n";
-    cout << "7. Cerrar sesion\n";
+    cout << "7. Activar Plan\n";
     cout << "Elige una opcion: ";
     cin >> opcion;
     cin.ignore(); // Limpia el buffer
@@ -743,6 +755,8 @@ void menuUsuario(string &contactoActual) {
   } while (opcion != 8 && opcion != 9);
 }
 
+
+// La función 'main' - el punto de partida de la ejecución del programa.
 int main() {
 	
   inicializarServiciosYPlanes();
